@@ -1,0 +1,266 @@
+[
+    {
+        "identifier": "githubRepository",
+        "title": "Repository",
+        "icon": "Microservice",
+        "schema": {
+            "properties": {
+            "readme": {
+                "title": "README",
+                "type": "string",
+                "format": "markdown"
+            },
+            "url": {
+                "title": "Repository URL",
+                "type": "string",
+                "format": "url"
+            },
+            "defaultBranch": {
+                "title": "Default branch",
+                "type": "string"
+            }
+            },
+            "required": []
+        },
+        "mirrorProperties": {},
+        "calculationProperties": {},
+        "relations": {}
+    },
+    {
+        "identifier": "githubPullRequest",
+        "title": "Pull Request",
+        "icon": "Github",
+        "schema": {
+            "properties": {
+                "creator": { "title": "Creator", "type": "string" },
+                "assignees": {
+                    "title": "Assignees",
+                    "type": "array",
+                    "items": { "type": "string" }
+                },
+                "reviewers": {
+                    "title": "Reviewers",
+                    "type": "array",
+                    "items": { "type": "string" }
+                },
+                "status": {
+                    "title": "Status",
+                    "type": "string",
+                    "enum": ["open", "closed", "merged"],
+                    "enumColors": { "open": "green", "closed": "red", "merged": "purple" }
+                },
+                "closedAt": {
+                    "title": "Closed At",
+                    "type": ["string", "null"],
+                    "format": "date-time"
+                },
+                "updatedAt": {
+                    "title": "Updated At",
+                    "type": "string",
+                    "format": "date-time"
+                },
+                "mergedAt": {
+                    "title": "Merged At",
+                    "type": ["string", "null"],
+                    "format": "date-time"
+                },
+                "createdAt": {
+                    "title": "Created At",
+                    "type": "string",
+                    "format": "date-time"
+                },
+                "link": { "format": "url", "type": "string" },
+                "leadTimeHours": {
+                    "title": "Lead Time in hours",
+                    "type": ["number", "null"]
+                },
+                "prNumber": {
+                    "title": "Pull Request Number",
+                    "type": "integer"
+                }
+            },
+            "required": ["creator", "status", "createdAt", "link", "prNumber"]
+        },
+        "mirrorProperties": {},
+        "calculationProperties": {
+            "days_old": {
+                "title": "Days Old",
+                "icon": "DefaultProperty",
+                "calculation": "(now / 86400) - (.properties.createdAt | capture(\"(?<date>\\\\d{4}-\\\\d{2}-\\\\d{2})\") | .date | strptime(\"%Y-%m-%d\") | mktime / 86400) | floor",
+                "type": "number"
+            }
+        },
+        "relations": {
+            "repository": {
+                "title": "Repository",
+                "target": "githubRepository",
+                "required": true,
+                "many": false
+            }
+        }
+    },
+    {
+        "identifier": "githubIssue",
+        "title": "Issue",
+        "icon": "Github",
+        "schema": {
+            "properties": {
+            "creator": {
+                "title": "Creator",
+                "type": "string"
+            },
+            "assignees": {
+                "title": "Assignees",
+                "type": "array"
+            },
+            "labels": {
+                "title": "Labels",
+                "type": "array"
+            },
+            "status": {
+                "title": "Status",
+                "type": "string",
+                "enum": ["open", "closed"],
+                "enumColors": {
+                "open": "green",
+                "closed": "purple"
+                }
+            },
+            "createdAt": {
+                "title": "Created At",
+                "type": "string",
+                "format": "date-time"
+            },
+            "closedAt": {
+                "title": "Closed At",
+                "type": "string",
+                "format": "date-time"
+            },
+            "updatedAt": {
+                "title": "Updated At",
+                "type": "string",
+                "format": "date-time"
+            },
+            "description": {
+                "title": "Description",
+                "type": "string",
+                "format": "markdown"
+            },
+            "issueNumber": {
+                "title": "Issue Number",
+                "type": "number"
+            },
+            "link": {
+                "title": "Link",
+                "type": "string",
+                "format": "url"
+            }
+            },
+            "required": []
+        },
+        "mirrorProperties": {},
+        "calculationProperties": {},
+        "relations": {
+            "repository": {
+            "target": "githubRepository",
+            "required": true,
+            "many": false
+            }
+        }
+    },
+    {
+        "identifier": "githubTeam",
+        "title": "GitHub Team",
+        "icon": "Github",
+        "schema": {
+            "properties": {
+            "slug": {
+                "title": "Slug",
+                "type": "string"
+            },
+            "description": {
+                "title": "Description",
+                "type": "string"
+            },
+            "link": {
+                "title": "Link",
+                "icon": "Link",
+                "type": "string",
+                "format": "url"
+            },
+            "permission": {
+                "title": "Permission",
+                "type": "string"
+            },
+            "notification_setting": {
+                "title": "Notification Setting",
+                "type": "string"
+            }
+            },
+            "required": []
+        },
+        "mirrorProperties": {},
+        "calculationProperties": {},
+        "relations": {}
+    },
+    {
+        "identifier": "githubWorkflow",
+        "title": "Workflow",
+        "icon": "Github",
+        "schema": {
+            "properties": {
+            "path": {
+                "title": "Path",
+                "type": "string"
+            },
+            "status": {
+                "title": "Status",
+                "type": "string",
+                "enum": [
+                "active",
+                "deleted",
+                "disabled_fork",
+                "disabled_inactivity",
+                "disabled_manually"
+                ],
+                "enumColors": {
+                "active": "green",
+                "deleted": "red"
+                }
+            },
+            "createdAt": {
+                "title": "Created At",
+                "type": "string",
+                "format": "date-time"
+            },
+            "updatedAt": {
+                "title": "Updated At",
+                "type": "string",
+                "format": "date-time"
+            },
+            "deletedAt": {
+                "title": "Deleted At",
+                "type": "string",
+                "format": "date-time"
+            },
+            "link": {
+                "title": "Link",
+                "type": "string",
+                "format": "url"
+            }
+            },
+            "required": []
+        },
+        "mirrorProperties": {},
+        "calculationProperties": {},
+        "relations": {
+            "repository": {
+            "title": "Repository",
+            "target": "githubRepository",
+            "required": false,
+            "many": false
+            }
+        }
+    }
+
+]

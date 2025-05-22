@@ -1,0 +1,19 @@
+description: github integration for Port Ocean
+icon: Github  # Should be one of the available icons in Port
+features:
+  - type: exporter
+    section: Under Development  # Should be one of the available sections in Port
+    resources:
+      - kind: repository
+      - kind: pull-request
+      - kind: issue
+      - kind: team
+      - kind: workflow
+      # - kind: <ResourceName2>
+configurations:
+  - name: mygithubToken
+    # required: true
+    type: string
+    sensitive: true
+  - name: someApplicationUrl
+    type: url
